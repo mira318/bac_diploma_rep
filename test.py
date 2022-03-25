@@ -1,5 +1,6 @@
 import time
-import sys
+import yaml
+import sys, os
 from collections import OrderedDict
 from PIL import Image
 
@@ -119,6 +120,7 @@ def main():
         bn_eps=args['bn_eps'],
         scriptable=args['torchscript'],
         checkpoint_path=args['initial_checkpoint'])
+    train_info = torch.load(checkpoint_path + '/model_best.pth.tar')
     model.load_state_dict(train_info['state_dict'])
     model.eval()
 
