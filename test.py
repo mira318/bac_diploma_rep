@@ -90,7 +90,7 @@ def count_test(model, loader, loss_fn, args, log_suffix=''):
             end = time.time()
             if args['local_rank'] == 0 and (last_batch or batch_idx % args['log_interval'] == 0):
                 log_name = 'Test' + log_suffix
-                _logger.info(
+                print(
                     '{0}: [{1:>4d}/{2}]  '
                     'Time: {batch_time.val:.3f} ({batch_time.avg:.3f})  '
                     'Loss: {loss.val:>7.4f} ({loss.avg:>6.4f})  '
@@ -104,7 +104,7 @@ def count_test(model, loader, loss_fn, args, log_suffix=''):
 
 
 def main():
-    checkpoint_path = sys.argv[0]
+    checkpoint_path = sys.argv[1]
     args = yaml.load(open(checkpoint_path + '/args.yaml'))
     args['distributed'] = False
 
@@ -141,25 +141,10 @@ def main():
         pin_memory=args['pin_mem'],
     )
 
-    dataset_test = rvl_cdip_test_dataset(args.data_dir, None)
-    loader_test = create_loader(
-        dataset_test,
-        input_size=model.input_size,
-        batch_size=model.batch_size,
-        is_training=False,
-
-        interpolation=train_info['interpolation'],
-        mean=train_info['mean'],
-        std=train_info['std'],
-        num_workers=train_info.workers,
-        distributed=train_info.distributed,
-        crop_pct=train_info['crop_pct'],
-        pin_memory=train_info.pin_mem,
-    )
-
     loss_fn = nn.CrossEntropyLoss().cuda()
     model = model.cuda()
     metrics = count_test(model, loader_test, loss_fn, args)
+    print('metrics:', metrics)
 
 if __name__ == '__main__':
     main()
