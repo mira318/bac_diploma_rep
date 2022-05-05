@@ -121,7 +121,7 @@ def main():
         bn_eps=args['bn_eps'],
         scriptable=args['torchscript'],
         checkpoint_path=args['initial_checkpoint'])
-    train_info = torch.load(checkpoint_path + '/model_best.pth.tar')
+    train_info = torch.load(checkpoint_path)
     model.load_state_dict(train_info['state_dict'])
     model.eval()
 
