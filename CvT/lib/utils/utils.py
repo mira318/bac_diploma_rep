@@ -42,6 +42,9 @@ def create_logger(cfg, cfg_name, phase='train'):
 
     final_output_dir = root_output_dir / dataset / cfg_name
 
+    print('root_output_dir = ', root_output_dir)
+    print('final_output_dir = ', final_output_dir)
+    
     print('=> creating {} ...'.format(root_output_dir))
     root_output_dir.mkdir(parents=True, exist_ok=True)
     print('=> creating {} ...'.format(final_output_dir))
@@ -93,7 +96,7 @@ def summary_model_on_master(model, config, output_dir, copy):
         except Exception:
             logging.error('=> error when counting parameters')
 
-        if config.MODEL_SUMMARY:
+        # if config.MODEL_SUMMARY:
             # try:
                 # logging.info('== model_stats by tensorwatch ==')
                 # df = tw.model_stats(

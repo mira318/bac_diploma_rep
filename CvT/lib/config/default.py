@@ -18,7 +18,7 @@ _C.DIST_BACKEND = 'nccl'
 _C.GPUS = (0,)
 # _C.LOG_DIR = ''
 _C.MULTIPROCESSING_DISTRIBUTED = True
-_C.OUTPUT_DIR = ''
+_C.OUTPUT_DIR = './../../../working'
 _C.PIN_MEMORY = True
 _C.PRINT_FREQ = 20
 _C.RANK = 0
@@ -51,7 +51,7 @@ _C.LOSS.LOSS = 'softmax'
 
 # DATASET related params
 _C.DATASET = CN()
-_C.DATASET.ROOT = './../../rvl-cdip_data'
+_C.DATASET.ROOT = './../../rvlcdipclear'
 _C.DATASET.DATASET = 'rvl-cdip'
 # _C.DATASET.TRAIN_SET = ''
 # _C.DATASET.TEST_SET = ''
