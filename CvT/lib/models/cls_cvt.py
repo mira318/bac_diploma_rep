@@ -1,6 +1,8 @@
 from functools import partial
 from itertools import repeat
-from torch._six import container_abcs
+# from torch._six import container_abcs
+
+import collections.abc as container_abcs
 
 import logging
 import os
