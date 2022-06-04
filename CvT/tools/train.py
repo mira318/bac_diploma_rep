@@ -103,8 +103,8 @@ def main():
         model, optimizer, config, final_output_dir, True
     )
 
-    train_loader = build_dataloader(config, True, args.distributed)
-    valid_loader = build_dataloader(config, False, args.distributed)
+    train_loader = build_dataloader(config, True, False, args.distributed)
+    valid_loader = build_dataloader(config, False, True, args.distributed)
 
     if args.distributed:
         model = torch.nn.parallel.DistributedDataParallel(

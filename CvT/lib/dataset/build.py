@@ -10,36 +10,36 @@ import torch
 import torch.utils.data
 import torchvision.datasets as datasets
 
-from .addition import rvl_cdip_train_dataset, rvl_cdip_val_dataset
+from .addition import rvl_cdip_dataset
 from .transformas import build_transforms
 from .samplers import RASampler
 
 
-def build_dataset(cfg, is_train):
+def build_dataset(cfg, is_train, is_validation):
     dataset = None
     transforms = build_transforms(cfg, is_train)
-
-    if is_train:
-        dataset = rvl_cdip_train_dataset(cfg.DATASET.ROOT, transforms)
-    else:
-        dataset = rvl_cdip_val_dataset(cfg.DATASET.ROOT, transforms)
+    dataset = rvl_cdip_dataset(cfg.DATASET.ROOT, is_train, 
+        is_validation, transforms)
+        
     logging.info(
-        '=> load samples: {}, is_train: {}'
-        .format(len(dataset), is_train)
+        '=> load samples: {}, is_train: {}, is_validation: {}'
+        .format(len(dataset), is_train, is_validation)
     )
-
+    
     return dataset
 
 
-def build_dataloader(cfg, is_train=True, distributed=False):
+def build_dataloader(cfg, is_train=True, is_validation=False, 
+    distributed=False):
     if is_train:
         batch_size_per_gpu = cfg.TRAIN.BATCH_SIZE_PER_GPU
         shuffle = True
     else:
         batch_size_per_gpu = cfg.TEST.BATCH_SIZE_PER_GPU
         shuffle = False
+        
 
-    dataset = build_dataset(cfg, is_train)
+    dataset = build_dataset(cfg, is_train, is_validation)
 
     if distributed:
         if is_train and cfg.DATASET.SAMPLER == 'repeated_aug':

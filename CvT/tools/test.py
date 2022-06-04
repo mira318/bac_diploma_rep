@@ -21,7 +21,7 @@ from config import update_config
 from core.function import test
 from core.loss import build_criterion
 from dataset import build_dataloader
-from dataset import RealLabelsImagenet
+# from dataset import RealLabelsImagenet
 from models import build_model
 from utils.comm import comm
 from utils.utils import create_logger
@@ -106,27 +106,27 @@ def main():
     criterion = build_criterion(config, train=False)
     criterion.cuda()
 
-    valid_loader = build_dataloader(config, False, args.distributed)
+    valid_loader = build_dataloader(config, False, False, args.distributed)
     real_labels = None
-    if (
-        config.DATASET.DATASET == 'imagenet'
-        and config.DATASET.DATA_FORMAT == 'tsv'
-        and config.TEST.REAL_LABELS
-    ):
-        filenames = valid_loader.dataset.get_filenames()
-        real_json = os.path.join(config.DATASET.ROOT, 'real.json')
-        logging.info('=> loading real labels...')
-        real_labels = RealLabelsImagenet(filenames, real_json)
+    # if (
+    #    config.DATASET.DATASET == 'imagenet'
+    #    and config.DATASET.DATA_FORMAT == 'tsv'
+    #    and config.TEST.REAL_LABELS
+    # ):
+    #    filenames = valid_loader.dataset.get_filenames()
+    #    real_json = os.path.join(config.DATASET.ROOT, 'real.json')
+    #    logging.info('=> loading real labels...')
+    #    real_labels = RealLabelsImagenet(filenames, real_json)
 
     valid_labels = None
-    if config.TEST.VALID_LABELS:
-        with open(config.TEST.VALID_LABELS, 'r') as f:
-            valid_labels = {
-                int(line.rstrip()) for line in f
-            }
-            valid_labels = [
-                i in valid_labels for i in range(config.MODEL.NUM_CLASSES)
-            ]
+    # if config.TEST.VALID_LABELS:
+    #    with open(config.TEST.VALID_LABELS, 'r') as f:
+    #        valid_labels = {
+    #            int(line.rstrip()) for line in f
+    #        }
+    #        valid_labels = [
+    #            i in valid_labels for i in range(config.MODEL.NUM_CLASSES)
+    #        ]
 
     logging.info('=> start testing')
     start = time.time()
