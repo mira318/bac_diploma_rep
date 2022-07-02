@@ -27,6 +27,7 @@ from utils.utils import setup_cudnn
 from utils.utils import summary_model_on_master
 from utils.utils import strip_prefix_if_present
 
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Count confusion matrix for network')
@@ -35,10 +36,6 @@ def parse_args():
                         help='experiment configure file name',
                         required=True,
                         type=str)
-
-    # distributed training
-    parser.add_argument("--local_rank", type=int, default=0)
-    parser.add_argument("--port", type=int, default=9000)
 
     parser.add_argument('opts',
                         help="Modify config options using the command-line",
@@ -80,7 +77,7 @@ def main():
     summary_model_on_master(model, config, final_output_dir, False)
 
     loader = build_dataloader(config, False, False)
-
+    
     logging.info('=> start counting')
     start = time.time()
     confusion_matrix = count_confusion(loader, model)

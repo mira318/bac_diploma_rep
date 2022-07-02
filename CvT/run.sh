@@ -23,14 +23,9 @@ test() {
 
 
 confusion() {
-    python3 -m torch.distributed.launch \
-        --nnodes ${NODE_COUNT} \
-        --node_rank ${RANK} \
-        --master_addr ${MASTER_ADDR} \
-        --master_port ${MASTER_PORT} \
-        --nproc_per_node ${GPUS} \
-        tools/confusion.py ${EXTRA_ARGS}
+    python3 tools/confusion.py ${EXTRA_ARGS}
 }
+
 
 ############################ Main #############################
 GPUS=`nvidia-smi -L | wc -l`

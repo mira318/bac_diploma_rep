@@ -3,13 +3,14 @@ import time
 import torch
 import numpy as np
 
+
 NUM_CLASSES = 16
 
 @torch.no_grad()
 def count_confusion(loader, model):
-    conf_coeffs = np.zeros((NUM_CLASSES, NUM_CLASSES)).astype(int)
     
-    sum_coeffs = 0
+    conf_coeffs = np.zeros((NUM_CLASSES, NUM_CLASSES)).astype(int)
+
 
     model.eval()
     topk = (1,)
@@ -24,11 +25,8 @@ def count_confusion(loader, model):
         _, pred = outputs.topk(maxk, 1, True, True)
         pred = pred.t()
         
-        for actual, predicted in zip(y, pred):
+        for actual, predicted in zip(y, pred[0]):
             conf_coeffs[actual.cpu()][predicted.cpu()] += 1
-            sum_coeffs += 1
-         
-    print('sum_coeffs = ', sum_coeffs)
-    return conf_coeffs
-
     
+    return conf_coeffs
+            
